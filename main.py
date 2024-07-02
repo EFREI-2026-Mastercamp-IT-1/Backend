@@ -26,15 +26,11 @@ def get_db_connection():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://0.0.0.0:3147/",
-        "https://frontend-v2-digj.onrender.com/"
-    ],
+    allow_origins=["*"],  # Autoriser toutes les origines
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Autoriser toutes les méthodes
+    allow_headers=["*"],  # Autoriser tous les en-têtes
 )
-
 @app.get("/stops/{line_name}", response_model=List[Stop])
 def read_stops(line_name: str):
     conn = get_db_connection()
