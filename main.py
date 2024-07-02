@@ -59,7 +59,7 @@ def read_stop(line_name: str, stop_id: str):
 def get_kruskal():
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM new_table")
+    cursor.execute("SELECT * FROM stations")
     nb_vertices = cursor.fetchall()
     nb_vertices = len(nb_vertices)
     g = Graph(nb_vertices)
@@ -72,7 +72,7 @@ def get_kruskal():
 
     acpm = g.kruskal()
 
-    cursor.execute("SELECT stop_ids,id FROM new_table")
+    cursor.execute("SELECT stop_ids,id FROM stations")
     stop_ids = cursor.fetchall()
     stop_ids = {id: stop_id.split(',')[0] for stop_id, id in stop_ids}
 
@@ -116,7 +116,7 @@ def get_dijkstra(src: int, dest: int):
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT COUNT(*) FROM new_table")
+    cursor.execute("SELECT COUNT(*) FROM stations")
     nb_vertices = cursor.fetchone()[0]
 
     g = GraphDijkstra(nb_vertices)
@@ -145,7 +145,7 @@ def read_stations():
     for line in lines:
         cursor.execute(f"""
             SELECT nt.*, l.lon, l.lat, l.stop_sequence, l.stop_id as line_stop_id
-            FROM new_table nt
+            FROM stations nt
             JOIN {line} l ON nt.stop_ids LIKE '%' || l.stop_id || '%'
             ORDER BY l.stop_sequence
         """)
@@ -158,7 +158,7 @@ def read_stations():
                 next_station_id = line_stations[i + 1]["line_stop_id"]
                 cursor.execute(f"""
                     SELECT id
-                    FROM new_table
+                    FROM stations
                     WHERE stop_ids LIKE '%' || ? || '%'
                 """, (next_station_id,))
                 next_station_new_table_id = cursor.fetchone()
@@ -170,7 +170,7 @@ def read_stations():
                 prev_station_id = line_stations[i - 1]["line_stop_id"]
                 cursor.execute(f"""
                     SELECT id
-                    FROM new_table
+                    FROM stations
                     WHERE stop_ids LIKE '%' || ? || '%'
                 """, (prev_station_id,))
                 prev_station_new_table_id = cursor.fetchone()
