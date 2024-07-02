@@ -27,7 +27,7 @@ def get_db_connection():
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:10000/",
+        "http://localhost:3147/",
         "https://frontend-v2-digj.onrender.com/"
     ],
     allow_credentials=True,
