@@ -26,7 +26,7 @@ def get_db_connection():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Autoriser toutes les origines
+    allow_origins=["https://frontend-v2-digj.onrender.com/"],  # Autoriser toutes les origines
     allow_credentials=True,
     allow_methods=["*"],  # Autoriser toutes les méthodes
     allow_headers=["*"],  # Autoriser tous les en-têtes
